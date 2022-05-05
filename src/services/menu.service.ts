@@ -2,6 +2,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Item } from "src/models/item.entity";
 import { Menu } from "src/models/menu.entity";
 import { Repository } from "typeorm";
+import {NotFoundException} from "@nestjs/common";
 
 export class MenuService {
     constructor(
@@ -10,7 +11,6 @@ export class MenuService {
         ) {}
     async create(body: Menu) {
         try {
-            console.log(body);
             const {name, items, restaurant} = body;
             const itemsArray = await this.repositoryItem.findByIds(items);
             const menu = this.repository.create({
@@ -24,7 +24,27 @@ export class MenuService {
             }
         } catch(error) {
             return {
-                sucess: false,
+                success: false,
+                message: error.message
+            }
+        }
+    }
+    async addItem(code: string, items) {
+        try {
+            let menu = await this.repository.findOne({ relations: ['items'], where: {code}});
+            let itemsArray = await this.repositoryItem.findByIds(items);
+            itemsArray.forEach(async item => {
+                item.menu = menu;
+                await this.repositoryItem.update({id: item.id}, item);
+                menu.items = [...menu.items, item]
+            })
+            return {
+                success: true,
+                data: menu
+            }
+        } catch(error) {
+            return {
+                success: false,
                 message: error.message
             }
         }

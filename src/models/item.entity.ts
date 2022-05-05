@@ -15,6 +15,8 @@ export class Item {
     @Column()
     price: number;
 
-    @ManyToOne(() => Menu, menu => menu.items, {onDelete: 'SET NULL'})
+    @ManyToOne(() => Menu, menu => menu.items, {cascade: true,
+        onDelete: 'CASCADE',
+        onUpdate:'CASCADE'})
     menu: Menu;
 }

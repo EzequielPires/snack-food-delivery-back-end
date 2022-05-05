@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import {Body, Controller, Get, Param, Post, Put} from "@nestjs/common";
 import { Menu } from "src/models/menu.entity";
 import { MenuService } from "src/services/menu.service";
 
@@ -9,6 +9,12 @@ export class MenuController {
     create(@Body() body: Menu){
         return this.service.create(body);
     }
+
+    @Put('add-item/:id')
+    addItem(@Param('id') id: string, @Body() body) {
+        return this.service.addItem(id, body.items);
+    }
+
 
     @Get('list')
     findUsers() {
