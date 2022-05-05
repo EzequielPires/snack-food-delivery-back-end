@@ -29,18 +29,15 @@ export class MenuService {
             }
         }
     }
-    async addItem(code: string, items) {
+    async addItem(code: string, item: any) {
         try {
             let menu = await this.repository.findOne({ relations: ['items'], where: {code}});
-            let itemsArray = await this.repositoryItem.findByIds(items);
-            itemsArray.forEach(async item => {
-                item.menu = menu;
-                await this.repositoryItem.update({id: item.id}, item);
-                menu.items = [...menu.items, item]
+            await this.repositoryItem.update({id: item}, {
+                menu: menu
             })
             return {
                 success: true,
-                data: menu
+                data: await this.repository.findOne({ relations: ['items'], where: {code}})
             }
         } catch(error) {
             return {
@@ -49,16 +46,32 @@ export class MenuService {
             }
         }
     }
+    async removeItem(codeMenu: string, codeItem: any) {
+        try {
+            await this.repositoryItem.update({id: codeItem}, {
+                menu: null
+            })
+            return {
+                success: true,
+                data: await this.repository.findOne({ relations: ['items'], where: {code: codeMenu}})
+            }
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message
+            }
+        }
+    }
     async findAll() {
         try {
-            const menu = await this.repository.find();
+            const menu = await this.repository.find({relations: ['items']});
             return {
                 success: true,
                 data: menu
             }
         } catch(error) {
             return {
-                sucess: false,
+                success: false,
                 message: error.message
             }
         }

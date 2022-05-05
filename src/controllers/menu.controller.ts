@@ -11,10 +11,14 @@ export class MenuController {
     }
 
     @Put('add-item/:id')
-    addItem(@Param('id') id: string, @Body() body) {
-        return this.service.addItem(id, body.items);
+    addItem(@Param('id') id: string, @Body() body: any) {
+        return this.service.addItem(id, body.item);
     }
 
+    @Put('remove-item/:id')
+    removeItem(@Param('id') id: string, @Body() body: any) {
+        return this.service.removeItem(id, body.item);
+    }
 
     @Get('list')
     findUsers() {
