@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, JoinTable, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import { Item } from "./item.entity";
+import {Restaurant} from "./restaurant.entity";
 
 @Entity()
 export class Menu {
@@ -12,4 +13,7 @@ export class Menu {
     @OneToMany(() => Item, item => item.menu, {eager: true, onDelete: 'SET NULL'})
     @JoinColumn()
     items: Item[];
+
+    @ManyToOne(() => Restaurant, restaurant => restaurant.menus, {nullable: false, onDelete: 'CASCADE'})
+    restaurant: Restaurant;
 }

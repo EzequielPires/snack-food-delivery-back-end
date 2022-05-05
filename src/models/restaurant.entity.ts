@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import { Category } from "./category.entity";
+import {Menu} from "./menu.entity";
 
 @Entity()
 export class Restaurant {
@@ -28,4 +29,8 @@ export class Restaurant {
     @ManyToOne(() => Category, category => category.restaurant, {eager: true})
     @JoinColumn()
     categoryMain: Category;
+
+    @OneToMany(() => Menu, menu => menu.restaurant, {eager: true})
+    @JoinColumn()
+    menus: Menu[];
 }
