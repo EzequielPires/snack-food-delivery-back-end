@@ -3,7 +3,7 @@
     "host": "localhost",
     "port": 3306,
     "username": "root",
-    "password": "Term-228687535",
+    "password": "term228687535",
     "database": "delivery",
     "entities": ["dist/**/*.entity{.ts,.js}"],
     "synchronize": true

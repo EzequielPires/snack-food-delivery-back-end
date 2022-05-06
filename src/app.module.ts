@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { ItemController } from './controllers/item.controller';
 import { CategoryModule } from './modules/category.module';
 import { ItemModule } from './modules/item.module';
@@ -9,12 +11,15 @@ import { UserModule } from './modules/user.module';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', ''),
+    }),
     TypeOrmModule.forRoot(),
     UserModule,
     RestaurantModule,
     CategoryModule,
     MenuModule,
-    ItemModule
+    ItemModule,
   ],
   controllers: [],
   providers: [],

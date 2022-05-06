@@ -14,6 +14,9 @@ export class Item {
 
     @Column()
     price: number;
+    
+    @Column({nullable: true, default: null})
+    image: string;
 
     @ManyToOne(() => Menu, menu => menu.items, {cascade: true,
         onDelete: 'CASCADE',

@@ -12,7 +12,7 @@ export class MenuService {
     async create(body: Menu) {
         try {
             const {name, items, restaurant} = body;
-            const itemsArray = await this.repositoryItem.findByIds(items);
+            const itemsArray = items ? await this.repositoryItem.findByIds(items) : [];
             const menu = this.repository.create({
                 name,
                 items: itemsArray,

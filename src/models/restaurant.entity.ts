@@ -22,6 +22,9 @@ export class Restaurant {
     @Column()
     minimumOrderValue: number;
 
+    @Column({nullable: true, default: null})
+    image: string;
+
     @ManyToMany(() => Category, category => category.restaurants, {eager: true})
     @JoinTable()
     categories: Category[];
