@@ -18,6 +18,11 @@ export class RestaurantController {
         return this.service.findRestaurants();
     }
 
+    @Get(':id')
+    findOne(@Param('id') id: string) {
+        return this.service.findOne(id);
+    }
+
     @Put('upload/image/:id')
     @UseInterceptors(FileInterceptor("file", {
         storage: diskStorage({
@@ -28,5 +33,17 @@ export class RestaurantController {
     }))
     uploadImage(@UploadedFile() file: Express.Multer.File, @Param('id', ParseUUIDPipe) id: string) {
         return this.service.uploadImage(file, id);
+    }
+
+    @Put('upload/banner/:id')
+    @UseInterceptors(FileInterceptor("file", {
+        storage: diskStorage({
+            destination: './storage/restaurants',
+            filename: editFileName,
+        }),
+        fileFilter: imageFileFilter,
+    }))
+    uploadBanner(@UploadedFile() file: Express.Multer.File, @Param('id', ParseUUIDPipe) id: string) {
+        return this.service.uploadBanner(file, id);
     }
 }

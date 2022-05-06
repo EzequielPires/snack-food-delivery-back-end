@@ -36,6 +36,24 @@ export class RestaurantService {
         }
     }
 
+    async findOne(id: string) {
+        try {
+            const restaurant = await this.repository.find({
+                relations: ['menus', 'menus.items'],
+                where: {id}
+            });
+            return {
+                success: true,
+                data: restaurant[0]
+            }
+        } catch (error) {
+            return {
+                sucess: false,
+                message: error.message
+            }
+        }
+    }
+
     async findRestaurants() {
         try {
             const restaurants = await this.repository.find();
@@ -59,6 +77,26 @@ export class RestaurantService {
             }
             await this.repository.update({id}, {
                 image: `/storage/restaurants/${file.filename}`
+            })
+            return {
+                success: true,
+                data: await this.repository.findOne(id)
+            }
+        } catch (error) {
+            return {
+                sucess: false,
+                message: error.message
+            }
+        }
+    }
+    async uploadBanner(file: Express.Multer.File, id: string) {
+        try {
+            const restaurant = await this.repository.findOne(id);
+            if(!restaurant) {
+                throw new NotFoundException(`Não foi encontrado nenhum item com id ${id}`);
+            }
+            await this.repository.update({id}, {
+                banner: `/storage/restaurants/${file.filename}`
             })
             return {
                 success: true,

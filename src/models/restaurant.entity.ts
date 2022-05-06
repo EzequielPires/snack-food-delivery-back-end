@@ -25,6 +25,9 @@ export class Restaurant {
     @Column({nullable: true, default: null})
     image: string;
 
+    @Column({nullable: true, default: null})
+    banner: string;
+
     @ManyToMany(() => Category, category => category.restaurants, {eager: true})
     @JoinTable()
     categories: Category[];
